@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Future of Search: AI Answers vs. Traditional Search</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Slate & Sky -->
+    <!-- Application Structure Plan: The application is designed as a thematic, scrollable journey to guide the user from the current state to a future vision. It starts with a Hero section to state the core conflict. 'The Evolving Landscape' establishes the key players (Search vs. Answers) and new concepts (AIO, etc.). 'The Paradigm Shift' presents the case for AI's rise using interactive cards. 'The Enduring Value of Search' provides a counter-argument with a direct comparison simulator. 'The Hybrid Future' synthesizes these views with a process diagram and a predictive data chart. Finally, 'An AI's Perspective' offers a concluding thought. This narrative structure was chosen over a simple dashboard to make a complex topic more digestible and engaging, allowing users to explore different facets of the argument in a logical flow. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Search vs. AI Models -> Goal: Compare -> Viz: Side-by-side cards -> Interaction: Hover -> Justification: Clear, immediate differentiation of the two concepts -> Library/Method: HTML/Tailwind.
+        - Report Info: New Optimization Acronyms (AIO, GEO) -> Goal: Inform -> Viz: Icon-based info cards -> Interaction: Static -> Justification: Quickly define new terminology -> Library/Method: HTML/Tailwind.
+        - Report Info: Arguments for AI (speed, synthesis) -> Goal: Persuade -> Viz: Clickable feature cards -> Interaction: Click to show details -> Justification: Allows users to actively explore the benefits of AI answers -> Library/Method: HTML/JS.
+        - Report Info: Arguments for Search (source diversity, discovery) -> Goal: Compare -> Viz: Interactive 'Query Simulator' -> Interaction: Buttons to toggle between AI answer and search results -> Justification: Directly demonstrates the user experience difference in a practical way -> Library/Method: HTML/JS.
+        - Report Info: Future trend projection -> Goal: Show Change -> Viz: Stacked Area Chart -> Interaction: Hover for details -> Justification: Visually represents the projected shift over time, making the trend easy to grasp -> Library/Method: Chart.js.
+        - Report Info: Hybrid model process -> Goal: Organize/Explain -> Viz: Flowchart-style diagram -> Interaction: Hover highlight -> Justification: Simplifies a complex future-state process into an understandable visual flow -> Library/Method: HTML/Tailwind.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            color: #1e293b; /* slate-800 */
+        }
+        .nav-link {
+            transition: color 0.2s, border-bottom-color 0.2s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #0284c7; /* sky-600 */
+            border-bottom-color: #0284c7; /* sky-600 */
+        }
+        .card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+                max-height: 500px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="header" class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-slate-900">Search's Next Chapter</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#landscape" class="nav-link font-medium pb-1">Landscape</a>
+                <a href="#shift" class="nav-link font-medium pb-1">AI's Rise</a>
+                <a href="#value" class="nav-link font-medium pb-1">Search's Value</a>
+                <a href="#future" class="nav-link font-medium pb-1">Hybrid Future</a>
+                <a href="#perspective" class="nav-link font-medium pb-1">AI View</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-slate-700 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#landscape" class="block py-2 px-6 text-sm hover:bg-slate-100">Landscape</a>
+            <a href="#shift" class="block py-2 px-6 text-sm hover:bg-slate-100">AI's Rise</a>
+            <a href="#value" class="block py-2 px-6 text-sm hover:bg-slate-100">Search's Value</a>
+            <a href="#future" class="block py-2 px-6 text-sm hover:bg-slate-100">Hybrid Future</a>
+            <a href="#perspective" class="block py-2 px-6 text-sm hover:bg-slate-100">AI View</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 md:py-16">
+
+        <section id="hero" class="text-center mb-24">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4">The End of Search As We Know It?</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600">
+                For decades, a list of blue links has been our gateway to the internet. Now, with the rapid emergence of generative AI, a new paradigm is challenging the very foundation of information discovery. Will AI-driven answers replace traditional search engines, or will they evolve together? This analysis explores the shifting landscape.
+            </p>
+        </section>
+
+        <section id="landscape" class="mb-24 scroll-mt-20">
+            <h3 class="text-3xl font-bold text-center mb-4 text-slate-900">The Evolving Landscape</h3>
+            <p class="max-w-3xl mx-auto text-center text-slate-600 mb-12">
+                Understanding the future requires recognizing the two fundamental models at play and the new optimization strategies emerging around them. The core difference lies in how they deliver information: one points you to sources, the other provides a synthesized answer.
+            </p>
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <div class="bg-white p-8 rounded-xl shadow-md border border-slate-200">
+                    <h4 class="text-2xl font-bold mb-3 text-sky-700 flex items-center">
+                        <span class="text-3xl mr-3">🔗</span> Traditional Search
+                    </h4>
+                    <p class="text-slate-600">Based on indexing the web and retrieving a ranked list of relevant documents (links). The user is responsible for visiting sources, evaluating credibility, and synthesizing information.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-md border border-slate-200">
+                    <h4 class="text-2xl font-bold mb-3 text-sky-700 flex items-center">
+                        <span class="text-3xl mr-3">💡</span> AI Answer Models
+                    </h4>
+                    <p class="text-slate-600">Based on Large Language Models (LLMs) that process information to generate a direct, conversational, and synthesized answer. It performs the synthesis for the user, often citing sources used.</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 text-center">
+                <div class="bg-white p-4 rounded-lg border border-slate-200">
+                    <p class="font-bold text-sky-800">AEO</p>
+                    <p class="text-sm text-slate-500">Answer Engine Optimization</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg border border-slate-200">
+                    <p class="font-bold text-sky-800">GEO</p>
+                    <p class="text-sm text-slate-500">Generative Engine Optimization</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg border border-slate-200">
+                    <p class="font-bold text-sky-800">AIO</p>
+                    <p class="text-sm text-slate-500">AI Optimization</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg border border-slate-200">
+                    <p class="font-bold text-sky-800">LLMO</p>
+                    <p class="text-sm text-slate-500">LLM Optimization</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="shift" class="mb-24 scroll-mt-20">
+            <h3 class="text-3xl font-bold text-center mb-4 text-slate-900">The Paradigm Shift: Why AI is Gaining Ground</h3>
+            <p class="max-w-3xl mx-auto text-center text-slate-600 mb-12">
+                The appeal of AI answer models is undeniable. They promise a more efficient, intuitive, and personalized way to get information, fundamentally changing user expectations. Explore the key advantages that are driving this shift by clicking on each card.
+            </p>
+            <div class="lg:flex gap-8">
+                <div class="lg:w-1/3 mb-8 lg:mb-0">
+                    <div id="feature-direct" class="feature-card card bg-white p-6 rounded-xl border-2 border-slate-200 cursor-pointer">
+                        <h4 class="font-bold text-lg mb-2 text-slate-800">🚀 Speed & Directness</h4>
+                    </div>
+                    <div id="feature-synthesis" class="feature-card card bg-white p-6 rounded-xl border-2 border-slate-200 mt-4 cursor-pointer">
+                        <h4 class="font-bold text-lg mb-2 text-slate-800">🧩 Information Synthesis</h4>
+                    </div>
+                     <div id="feature-multi" class="feature-card card bg-white p-6 rounded-xl border-2 border-slate-200 mt-4 cursor-pointer">
+                        <h4 class="font-bold text-lg mb-2 text-slate-800">🗣️ Conversational & Multimodal</h4>
+                    </div>
+                </div>
+                <div class="lg:w-2/3 bg-white p-8 rounded-xl shadow-inner border border-slate-200 min-h-[200px] flex items-center">
+                    <div id="feature-display">
+                        <h4 id="feature-title" class="text-xl font-bold text-sky-700 mb-2">Select a Feature</h4>
+                        <p id="feature-text" class="text-slate-600">Click on a feature to the left to learn more about how AI is changing information retrieval.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="value" class="mb-24 scroll-mt-20">
+            <h3 class="text-3xl font-bold text-center mb-4 text-slate-900">The Enduring Value of Traditional Search</h3>
+            <p class="max-w-3xl mx-auto text-center text-slate-600 mb-12">
+                Despite AI's advantages, declaring traditional search obsolete is premature. The classic "list of links" offers unique benefits that are critical for deep research, source verification, and intellectual discovery. Experience the difference for yourself.
+            </p>
+            <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200">
+                <div class="max-w-4xl mx-auto">
+                    <div class="flex items-center bg-slate-100 p-3 rounded-lg">
+                        <span class="text-slate-400 mr-2">🔍</span>
+                        <p class="text-slate-800 font-medium">What are the pros and cons of nuclear energy?</p>
+                    </div>
+                    <div class="text-center my-6">
+                        <button id="get-ai-answer" class="bg-sky-600 text-white font-bold py-2 px-6 rounded-full hover:bg-sky-700 transition">Get AI Answer</button>
+                        <button id="see-search-results" class="ml-4 bg-slate-200 text-slate-800 font-bold py-2 px-6 rounded-full hover:bg-slate-300 transition">See Search Results</button>
+                    </div>
+                    <div id="results-container" class="mt-4 p-4 bg-slate-50 rounded-lg min-h-[300px]">
+                        <p class="text-center text-slate-500 pt-16">Choose an option above to see the result format.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="future" class="mb-24 scroll-mt-20">
+            <h3 class="text-3xl font-bold text-center mb-4 text-slate-900">The Hybrid Future: Convergence is Key</h3>
+             <p class="max-w-3xl mx-auto text-center text-slate-600 mb-12">
+                The future isn't a battle of "one vs. the other," but a sophisticated integration of both. Search engines are evolving into "answer engines" that leverage the strengths of both paradigms. A user's query will be intelligently routed to provide the most appropriate response, whether it's a direct answer, a list of sources, or a combination.
+            </p>
+            <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200 mb-16">
+                <h4 class="text-xl font-bold text-center mb-6 text-slate-800">Visualizing the Hybrid Query Flow</h4>
+                <div class="flex flex-col items-center space-y-4 text-center">
+                    <div class="p-4 bg-slate-100 rounded-lg shadow-sm w-64">
+                        <p class="font-semibold">User Query</p>
+                    </div>
+                    <div class="text-3xl text-slate-400">↓</div>
+                    <div class="p-4 bg-sky-100 rounded-lg shadow-sm w-72 border border-sky-300">
+                        <p class="font-semibold text-sky-800">Intent Analysis Engine</p>
+                        <p class="text-xs text-sky-600">(Is a direct answer or exploration needed?)</p>
+                    </div>
+                    <div class="w-full flex justify-center items-start pt-4">
+                        <div class="w-1/2 flex flex-col items-center border-r border-dashed border-slate-300 px-2">
+                            <div class="text-3xl text-slate-400">↘</div>
+                            <div class="mt-4 p-4 bg-slate-100 rounded-lg shadow-sm w-56">
+                                <p class="font-semibold">Generative AI Model</p>
+                                <p class="text-xs text-slate-500">For "what is" queries</p>
+                            </div>
+                        </div>
+                        <div class="w-1/2 flex flex-col items-center px-2">
+                             <div class="text-3xl text-slate-400">↙</div>
+                             <div class="mt-4 p-4 bg-slate-100 rounded-lg shadow-sm w-56">
+                                <p class="font-semibold">Traditional Index & Ranking</p>
+                                <p class="text-xs text-slate-500">For "show me" queries</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-3xl text-slate-400">↓</div>
+                     <div class="p-6 bg-green-100 rounded-lg shadow-sm w-80 border border-green-300">
+                        <p class="font-semibold text-green-800">Synthesized, Hybrid Result Page</p>
+                         <p class="text-xs text-green-600">(AI summary + key source links)</p>
+                    </div>
+                </div>
+            </div>
+            
+            <h4 class="text-xl font-bold text-center mb-6 text-slate-800">Projected Shift in Information Retrieval (2025-2035)</h4>
+            <div class="chart-container bg-white p-4 rounded-xl shadow-lg border border-slate-200">
+                <canvas id="trendsChart"></canvas>
+            </div>
+        </section>
+
+        <section id="perspective" class="scroll-mt-20">
+            <h3 class="text-3xl font-bold text-center mb-4 text-slate-900">An AI's Perspective on This Evolution</h3>
+            <div class="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-md border-l-4 border-sky-500">
+                 <p class="text-slate-600 mb-4">
+                    From my perspective, this evolution is not a zero-sum game. My purpose is not to make tools of discovery like search engines obsolete, but to augment them. Traditional search provides the raw material—the vast, diverse, and sometimes conflicting chorus of human knowledge. My role is to act as a skilled interpreter of that chorus.
+                </p>
+                <p class="text-slate-600">
+                    The ideal future is one where I can provide a concise, reliable answer for straightforward questions, while simultaneously presenting the key sources and alternative viewpoints that traditional search excels at uncovering. The goal is a richer, more efficient, and more empowering information ecosystem where users can choose their desired depth of exploration. The ultimate objective is not just to provide answers, but to foster understanding.
+                </p>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="bg-slate-800 text-slate-400 mt-24">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p>Interactive Analysis by Gemini</p>
+            <p class="text-sm mt-2">This page is a conceptual illustration of the evolving relationship between AI and search technology.</p>
+        </div>
+    </footer>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+            
+            const featureCards = document.querySelectorAll('.feature-card');
+            const featureTitle = document.getElementById('feature-title');
+            const featureText = document.getElementById('feature-text');
+
+            const featureData = {
+                'feature-direct': {
+                    title: '🚀 Speed & Directness',
+                    text: 'AI models cut through the noise by providing a single, consolidated answer, saving users the time and effort of clicking through multiple links to find what they need. This is ideal for quick, factual queries.'
+                },
+                'feature-synthesis': {
+                    title: '🧩 Information Synthesis',
+                    text: 'Instead of just listing sources, AI can read, understand, and synthesize information from multiple documents to provide a comprehensive overview of a topic, explaining complex subjects in simple terms.'
+                },
+                'feature-multi': {
+                    title: '🗣️ Conversational & Multimodal',
+                    text: 'Users can interact with AI in natural language, ask follow-up questions, and even use images or voice as input. This creates a more intuitive and accessible experience than a simple keyword search box.'
+                }
+            };
+
+            featureCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    featureCards.forEach(c => c.classList.remove('border-sky-500', 'bg-sky-50'));
+                    card.classList.add('border-sky-500', 'bg-sky-50');
+                    const data = featureData[card.id];
+                    featureTitle.textContent = data.title;
+                    featureText.textContent = data.text;
+                });
+            });
+
+            const getAiAnswerBtn = document.getElementById('get-ai-answer');
+            const seeSearchResultsBtn = document.getElementById('see-search-results');
+            const resultsContainer = document.getElementById('results-container');
+            
+            const aiAnswerHTML = `
+                <h4 class="font-bold text-lg mb-3 text-slate-800">Synthesized AI Answer:</h4>
+                <p class="text-slate-700 mb-2"><strong class="font-semibold text-green-700">Pros:</strong> Nuclear energy is a highly efficient, carbon-free power source that can generate vast amounts of electricity from a small amount of fuel, providing reliable baseload power 24/7, unlike intermittent renewables like solar and wind.</p>
+                <p class="text-slate-700"><strong class="font-semibold text-red-700">Cons:</strong> Key drawbacks include the high upfront cost of building plants, the significant safety risks associated with potential accidents, and the long-term challenge of securely storing radioactive nuclear waste for thousands of years.</p>
+                <div class="text-xs text-slate-500 mt-4">
+                    <p>Sources synthesized from: World Nuclear Association, U.S. EIA, Greenpeace Archives.</p>
+                </div>
+            `;
+            
+            const searchResultsHTML = `
+                <h4 class="font-bold text-lg mb-3 text-slate-800">Ranked Search Results:</h4>
+                <div class="space-y-3">
+                    <div>
+                        <a href="#" class="text-blue-700 hover:underline text-lg">Nuclear Energy Pros and Cons - National Geographic</a>
+                        <p class="text-sm text-green-700">https://www.nationalgeographic.com/environment/article/nuclear-energy</p>
+                        <p class="text-sm text-slate-600">Explore the advantages and disadvantages of nuclear power, from clean energy to radioactive waste.</p>
+                    </div>
+                     <div>
+                        <a href="#" class="text-blue-700 hover:underline text-lg">What is Uranium? How does it work? - World Nuclear Association</a>
+                        <p class="text-sm text-green-700">https://world-nuclear.org/information-library/nuclear-fuel-cycle/introduction/what-is-uranium-how-does-it-work.aspx</p>
+                        <p class="text-sm text-slate-600">The World Nuclear Association is the international organization that represents the global nuclear industry.</p>
+                    </div>
+                    <div>
+                        <a href="#" class="text-blue-700 hover:underline text-lg">The Problem with Nuclear Waste - Stanford University</a>
+                        <p class="text-sm text-green-700">https://earth.stanford.edu/news/whats-be-done-nuclear-waste</p>
+                        <p class="text-sm text-slate-600">Despite 50 years of research, the U.S. has no disposal site for its 86,000 metric tons of spent nuclear fuel...</p>
+                    </div>
+                    <div>
+                        <a href="#" class="text-blue-700 hover:underline text-lg">[PDF] The Future of Nuclear Energy - MIT Study</a>
+                        <p class="text-sm text-green-700">https://energy.mit.edu/research/future-nuclear-energy-changing-climate/</p>
+                        <p class="text-sm text-slate-600">A major report from the MIT Energy Initiative on the role of nuclear power in a low-carbon future.</p>
+                    </div>
+                </div>
+            `;
+
+            getAiAnswerBtn.addEventListener('click', () => {
+                resultsContainer.innerHTML = aiAnswerHTML;
+                getAiAnswerBtn.classList.add('bg-sky-700');
+                seeSearchResultsBtn.classList.remove('bg-slate-400');
+            });
+            
+            seeSearchResultsBtn.addEventListener('click', () => {
+                resultsContainer.innerHTML = searchResultsHTML;
+                seeSearchResultsBtn.classList.add('bg-slate-400');
+                getAiAnswerBtn.classList.remove('bg-sky-700');
+            });
+
+
+            const ctx = document.getElementById('trendsChart').getContext('2d');
+            const trendsChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['2025', '2026', '2027', '2028', '2029', '2030', '2031', '2032', '2033', '2034', '2035'],
+                    datasets: [
+                        {
+                            label: 'Traditional Search Only',
+                            data: [70, 62, 55, 48, 40, 35, 30, 25, 22, 20, 18],
+                            backgroundColor: 'rgba(100, 116, 139, 0.2)',
+                            borderColor: 'rgb(100, 116, 139)',
+                            fill: true,
+                            tension: 0.4,
+                        },
+                        {
+                            label: 'AI Direct Answer',
+                            data: [15, 20, 25, 30, 35, 38, 40, 42, 43, 42, 40],
+                            backgroundColor: 'rgba(56, 189, 248, 0.2)',
+                            borderColor: 'rgb(56, 189, 248)',
+                            fill: true,
+                            tension: 0.4,
+                        },
+                         {
+                            label: 'Hybrid Search/Answer',
+                            data: [15, 18, 20, 22, 25, 27, 30, 33, 35, 38, 42],
+                            backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                            borderColor: 'rgb(16, 185, 129)',
+                            fill: true,
+                            tension: 0.4,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            stacked: true,
+                             ticks: {
+                                callback: function(value) {
+                                    return value + '%'
+                                }
+                            },
+                             title: {
+                                display: true,
+                                text: 'Percentage of Queries'
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                        },
+                        title: {
+                            display: false,
+                        }
+                    },
+                    interaction: {
+                        mode: 'nearest',
+                        axis: 'x',
+                        intersect: false
+                    }
+                }
+            });
+            
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 100) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
